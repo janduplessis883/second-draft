@@ -1,5 +1,6 @@
 import streamlit as st
 from groq import Groq
+import re
 
 # Initialize the Groq client
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
@@ -31,13 +32,16 @@ def ask_groq(prompt: str, model: str = "meta-llama/llama-4-scout-17b-16e-instruc
 MODEL_OPTIONS = ["moonshotai/kimi-k2-instruct-0905", "meta-llama/llama-4-maverick-17b-128e-instruct", "qwen/qwen3-32b", "openai/gpt-oss-120b"]
 
 st.sidebar.header("Settings")
-model = st.sidebar.selectbox("Model", MODEL_OPTIONS, index=0)
+model = st.sidebar.selectbox("Model", MODEL_OPTIONS, index=2)
 tone = st.sidebar.radio("Select the tone of the email:", ("Formal", "Casual", "Neutral"), index=1)
 st.sidebar.divider()
 human = st.sidebar.checkbox("Apply human writing style", value=True)
 explain_changes = st.sidebar.checkbox("Explain changes", value=True)
 
-email = st.text_area("Past original email here:", height=150)
+email = st.text_area("Past original email here:", height=300)
+
+html_content = """<BR><BR><BR><img alt="Static Badge" src="https://img.shields.io/badge/github-janduplessis883-%234a83c0">"""
+st.sidebar.html(html_content)
 
 HUMAN_WRITING_GUIDELINES = """
 Revise your writing to read naturally, like something a thoughtful human would write. Focus on clarity, flow, and tone. Apply the following rules:
@@ -92,11 +96,16 @@ else:
 prompt = f"{base_prompt} Here is the email: \n<email>\n{email}\n</email>"
 
 if submit:
-    with st.spinner("Shining your email..."):
+    with st.spinner("Shining your email...", show_time=True):
         response = ask_groq(prompt, model=model)
         st.write("Your revised email:")
         with st.container(border=True):
-            st.markdown(response)
-
-html_content = """<BR><BR><BR><img alt="Static Badge" src="https://img.shields.io/badge/github-janduplessis883-%234a83c0">"""
-st.sidebar.html(html_content)
+            # extract reasoning separately if you still want to make it optional
+            match = re.search(r"<think>(.*?)</think>", response, flags=re.DOTALL)
+            reasoning = match.group(1).strip() if match else None
+            visible_text = re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL)
+            if reasoning:
+                with st.expander("Show hidden reasoning", icon=":material/neurology:"):
+                    st.markdown(f"{reasoning}")
+            st.markdown(visible_text)
+            st.toast("Email Spun !!", icon=":material/check_circle:", duration=5)
