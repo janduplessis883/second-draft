@@ -7,9 +7,8 @@ client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 # Streamlit app configuration
 st.set_page_config(page_title="Second-Draft", page_icon=":material/stylus_fountain_pen:", layout="centered")
-st.logo("logo.png", size="large")
-st.title("Second-Draft:material/stylus_fountain_pen:")
-
+st.logo("header.png", size="medium")
+st.image('header2.png')
 
 # Simple function to get a response from Groq
 def ask_groq(prompt: str, model: str = "meta-llama/llama-4-scout-17b-16e-instruct"):
@@ -38,7 +37,7 @@ st.sidebar.divider()
 human = st.sidebar.checkbox("Apply human writing style", value=True)
 explain_changes = st.sidebar.checkbox("Explain changes", value=True)
 
-email = st.text_area("Past original email here:", height=300)
+email = st.text_area("", height=300, placeholder="Paste your email here...", label_visibility="collapsed")
 
 html_content = """<BR><BR><BR><img alt="Static Badge" src="https://img.shields.io/badge/github-janduplessis883-%234a83c0">"""
 st.sidebar.html(html_content)
@@ -75,6 +74,34 @@ Before and After Example
 “The results — though preliminary — suggest success; however, it’s worth noting limitations.”
 	•	After:
 “The preliminary results suggest success. But there are still some limitations to address.”
+Let me summarize:
+Please revise the following text to sound more natural, clear, and human.
+
+Apply these specific rules:
+
+Punctuation & Flow
+
+Avoid em-dashes (—) and ellipses (...).
+
+Limit semicolons (;) and colons (:). Favor shorter, punchier sentences.
+
+Use paragraph breaks to improve readability.
+
+Vary sentence length and openings.
+
+Language & Tone
+
+Cut hedging and formal phrases (e.g., "however," "in conclusion," "utilize," "ascertain"). Be direct.
+
+Use contractions (e.g., "don't," "it's") unless the tone is highly formal.
+
+Rephrase terms that repeat in close proximity.
+
+Match the tone to the audience. This email should have a conversational tone.
+
+Core Goal
+
+Preserve the original meaning but significantly improve the clarity, flow, and tone. Get to the point.
 """
 EXPLAIN_PROMPT = "After you have re-written the email, write a paragraph explaining your the changed you have made and why you made them."
 NO_EXPLAIN_PROMPT = "No need to explain the changes you made."
