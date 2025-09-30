@@ -102,6 +102,7 @@ Match the tone to the audience. This email should have a conversational tone.
 Core Goal
 
 Preserve the original meaning but significantly improve the clarity, flow, and tone. Get to the point.
+Use British English spelling.
 """
 EXPLAIN_PROMPT = "After you have re-written the email, write a paragraph explaining your the changed you have made and why you made them."
 NO_EXPLAIN_PROMPT = "No need to explain the changes you made."
