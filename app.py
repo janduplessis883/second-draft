@@ -8,7 +8,7 @@ client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 # Streamlit app configuration
 st.set_page_config(page_title="Second-Draft", page_icon=":material/stylus_fountain_pen:", layout="centered")
 st.logo("header.png", size="medium")
-st.image('header2.png')
+st.header("Second-Draft :material/stylus_fountain_pen:")
 
 # Simple function to get a response from Groq
 def ask_groq(prompt: str, model: str = "meta-llama/llama-4-scout-17b-16e-instruct"):
@@ -82,7 +82,7 @@ Apply these specific rules:
 Punctuation & Flow
 
 Avoid em-dashes (—) and ellipses (...).
-
+Change '—' to '-'.
 Limit semicolons (;) and colons (:). Favor shorter, punchier sentences.
 
 Use paragraph breaks to improve readability.
