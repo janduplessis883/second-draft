@@ -1,18 +1,25 @@
 [theme]
-font="sans-serif"
-primaryColor="#ee7d3a" # Changed to a vibrant red for demonstration
-backgroundColor="#ffffff"
-secondaryBackgroundColor="#f5f5f4"
-textColor="#374151"
-baseRadius="medium"
-linkColor="#344756"
-linkUnderline=true # Added linkUnderline
+font="Inter:https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
 
-# Basic Color Palette
-redColor="#991b1b"
-orangeColor="#ffa500"
-yellowColor="#ffd700"
-greenColor="#a8c655"
-blueColor="#4a83c0"
-violetColor="#cf539b"
-grayColor="#9ca3af"
+base="light"
+primaryColor="#b46124"
+backgroundColor="#f1efea"
+secondaryBackgroundColor="#f8f7f5"
+fontColor="#3c2644"
+baseRadius="medium"
+
+redColor = "#991b1b"
+orangeColor = "#ea580c"
+yellowColor = "#facc15"
+greenColor = "#65a30d"
+blueColor = "#0284c7"
+violetColor = "#db2777"
+grayColor = "#a3a3a3"
+
+
+[theme.sidebar]
+primaryColor="#738187"
+backgroundColor="#c9cbca"
+secondaryBackgroundColor="#d9dbd6"
+fontColor="#3c2644"
+baseRadius="medium"

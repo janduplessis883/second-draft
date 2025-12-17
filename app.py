@@ -7,8 +7,8 @@ client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 # Streamlit app configuration
 st.set_page_config(page_title="Second-Draft", page_icon=":material/stylus_fountain_pen:", layout="centered")
-st.logo("header.png", size="medium")
-st.image("draft.gif")
+
+st.header("Second-Draft :material/stylus_fountain_pen:")
 
 # Simple function to get a response from Groq
 def ask_groq(prompt: str, model: str = "meta-llama/llama-4-scout-17b-16e-instruct"):
@@ -32,7 +32,7 @@ MODEL_OPTIONS = ["moonshotai/kimi-k2-instruct-0905", "meta-llama/llama-4-maveric
 
 st.sidebar.header("Settings")
 mode = st.sidebar.radio("Select Mode:", ["Email Rewriter", "Complaint Responder"], index=0)
-model = st.sidebar.selectbox("Model", MODEL_OPTIONS, index=2)
+model = st.sidebar.selectbox("Model", MODEL_OPTIONS, index=3)
 
 if mode == "Complaint Responder":
     tone = st.sidebar.radio("Select the tone of the email:", ("Formal", "Casual", "Neutral"), index=0, disabled=True)
