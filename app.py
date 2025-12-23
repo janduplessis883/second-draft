@@ -33,6 +33,7 @@ MODEL_OPTIONS = ["moonshotai/kimi-k2-instruct-0905", "meta-llama/llama-4-maveric
 st.sidebar.header("Settings")
 mode = st.sidebar.radio("Select Mode:", ["Email Rewriter", "Acknowledge Complaint", "Outcome of Investigation"], index=0)
 model = st.sidebar.selectbox("Model", MODEL_OPTIONS, index=3)
+send_to_llm = st.sidebar.toggle("Send to LLM", value=True, help="When enabled, the prompt will be sent to the LLM for processing. When disabled, only the prompt will be displayed.")
 
 if mode in ["Acknowledge Complaint", "Outcome of Investigation"]:
     tone = st.sidebar.radio("Select the tone of the email:", ("Formal", "Casual", "Neutral"), index=0, disabled=True)
@@ -98,7 +99,8 @@ Use British English spelling.
 EXPLAIN_PROMPT = "After you have re-written the email, write a paragraph explaining the changes you have made and why you made them."
 NO_EXPLAIN_PROMPT = "No need to explain the changes you made."
 
-submit = st.button("Rewrite Email", type="primary")
+button_label = ":material/mail_asterisk: Rewrite Email" if send_to_llm else ":material/prompt_suggestion: Generate Prompt"
+submit = st.button(button_label, type="primary")
 
 base_prompt = ""
 if mode == "Email Rewriter":
@@ -279,20 +281,26 @@ elif mode == "Outcome of Investigation":
     prompt = f"{base_prompt} Patient Complaint Email Text: <email>\n{email}\n</email> Practice Manager's Factual Context/Explanations: <context>\n{complaint_specific_response}\n</context>"
 
 if submit:
-    with st.spinner("Shining your email...", show_time=True):
-        response = ask_groq(prompt, model=model)
-        st.success("Your revised email is ready:")
-        with st.container(border=True):
-            # extract reasoning separately if you still want to make it optional
-            if response:
-                match = re.search(r"<think>(.*?)</think>", response, flags=re.DOTALL)
-                reasoning = match.group(1).strip() if match else None
-                visible_text = re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL)
-            else:
-                reasoning = None
-                visible_text = ""
-            if reasoning:
-                with st.expander("Show hidden reasoning", icon=":material/neurology:"):
-                    st.markdown(f"{reasoning}")
-            st.markdown(visible_text)
-            st.toast("Revised Email Ready.", icon="♥️", duration=5)
+    with st.expander("View Full Prompt Sent to LLM", icon=":material/prompt_suggestion:", expanded=False):
+        st.code(prompt, language="text", wrap_lines=True,)
+
+    if send_to_llm:
+        with st.spinner("Shining your email...", show_time=True):
+            response = ask_groq(prompt, model=model)
+            st.success("Your revised email is ready:")
+            with st.container(border=True):
+                # extract reasoning separately if you still want to make it optional
+                if response:
+                    match = re.search(r"<think>(.*?)</think>", response, flags=re.DOTALL)
+                    reasoning = match.group(1).strip() if match else None
+                    visible_text = re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL)
+                else:
+                    reasoning = None
+                    visible_text = ""
+                if reasoning:
+                    with st.expander("Show hidden reasoning", icon=":material/neurology:"):
+                        st.markdown(f"{reasoning}")
+                st.markdown(visible_text)
+                st.toast("Revised Email Ready.", icon="♥️", duration=5)
+    else:
+        st.info("LLM call skipped. Only prompt is displayed above.")
