@@ -16,6 +16,7 @@ blueColor = "#7b9faa"
 violetColor = "#db2777"
 grayColor = "#a3a3a3"
 
+codeBackgroundColor="#e8f2f5"
 
 [theme.sidebar]
 primaryColor="#ca3f4e"
