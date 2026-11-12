@@ -1,2 +1,4 @@
 secrets.toml
 .pythoon-version
+__pycache__/
+*.py[cod]
