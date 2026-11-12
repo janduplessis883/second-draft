@@ -88,6 +88,7 @@ with st.container(horizontal=True):
     generate = st.button('Generate draft', type='primary', icon=':material/edit_document:', key='generate')
     preview = st.button('Preview prompt', icon=':material/code:', key='preview')
 
+
 current_prompt = None
 try:
     current_prompt = build_prompt(mode, letter_date, st.session_state.source,
